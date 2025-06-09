@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy
 def APP_NAME
 def APP_VERSION
 def DOCKER_IMAGE_NAME
@@ -13,8 +14,7 @@ pipeline {
         gitParameter branch: '',
                     branchFilter: '.*',
                     defaultValue: 'origin/main',
-                    description: '',
-                    listSize: '0',
+                    description: '', listSize: '0',
                     name: 'TAG',
                     quickFilterEnabled: false,
                     selectedValue: 'DEFAULT',
@@ -49,14 +49,13 @@ pipeline {
         stage('Set Version') {
             steps {
                 script {
-                    APP_NAME = sh(
-                        script: "gradle -q getAppName",
-                        returnStdout: true
+                    APP_NAME = sh (
+                            script: "gradle -q getAppName",
+                            returnStdout: true
                     ).trim()
-
-                    APP_VERSION = sh(
-                        script: "gradle -q getAppVersion",
-                        returnStdout: true
+                    APP_VERSION = sh (
+                            script: "gradle -q getAppVersion",
+                            returnStdout: true
                     ).trim()
 
                     DOCKER_IMAGE_NAME = "${DOCKER_REGISTRY}/${APP_NAME}:${APP_VERSION}"
@@ -64,6 +63,16 @@ pipeline {
                     sh "echo IMAGE_NAME is ${APP_NAME}"
                     sh "echo IMAGE_VERSION is ${APP_VERSION}"
                     sh "echo DOCKER_IMAGE_NAME is ${DOCKER_IMAGE_NAME}"
+
+                    sh "echo TAG is ${params.TAG}"
+                    if( params.TAG.startsWith('origin') == false && params.TAG.endsWith('/main') == false ) {
+                        if( params.RELEASE == true ) {
+                            DOCKER_IMAGE_VERSION += '-RELEASE'
+                            PROD_BUILD = true
+                        } else {
+                            DOCKER_IMAGE_VERSION += '-TAG'
+                        }
+                    }
                 }
             }
         }
@@ -88,7 +97,8 @@ pipeline {
                     docker.withRegistry("", DOCKERHUB_CREDENTIAL) {
                         docker.image("${DOCKER_IMAGE_NAME}").push()
                     }
-                sh "docker rmi ${DOCKER_IMAGE_NAME}"
+
+                    sh "docker rmi ${DOCKER_IMAGE_NAME}"
                 }
             }
         }
