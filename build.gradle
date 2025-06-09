@@ -35,8 +35,8 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-tasks.named('jar') {
-    archiveClassifier = '' // plain.jar 생성 방지
+jar {
+    enabled = false
 }
 
 tasks.register('getAppName') {
