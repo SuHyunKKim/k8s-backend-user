@@ -68,10 +68,10 @@ pipeline {
                     sh "echo TAG is ${params.TAG}"
                     if( params.TAG.startsWith('origin') == false && params.TAG.endsWith('/main') == false ) {
                         if( params.RELEASE == true ) {
-                            DOCKER_IMAGE_VERSION += '-RELEASE'
+                            DOCKER_IMAGE_NAME += '-RELEASE'
                             PROD_BUILD = true
                         } else {
-                            DOCKER_IMAGE_VERSION += '-TAG'
+                            DOCKER_IMAGE_NAME += '-TAG'
                             TAG_BUILD = true
                         }
                     }
