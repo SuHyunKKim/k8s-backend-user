@@ -3,6 +3,7 @@ def APP_NAME
 def APP_VERSION
 def DOCKER_IMAGE_NAME
 def PROD_BUILD = false
+def TAG_BUILD = false
 pipeline {
     agent {
         node {
@@ -71,6 +72,7 @@ pipeline {
                             PROD_BUILD = true
                         } else {
                             DOCKER_IMAGE_VERSION += '-TAG'
+                            TAG_BUILD = true
                         }
                     }
                 }
@@ -84,6 +86,9 @@ pipeline {
         }
 
         stage('Build Docker Image') {
+            when {
+                expression { PROD_BUILD == true || TAG_BUILD == true }
+            }
             steps {
                 script {
                     docker.build "${DOCKER_IMAGE_NAME}"
