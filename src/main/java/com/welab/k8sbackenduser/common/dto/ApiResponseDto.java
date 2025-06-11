@@ -1,8 +1,10 @@
 package com.welab.k8sbackenduser.common.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class ApiResponseDto<T> {
     private String code;
     private String message;
