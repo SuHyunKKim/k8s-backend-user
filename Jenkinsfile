@@ -86,9 +86,9 @@ pipeline {
         }
 
         stage('Build Docker Image') {
-            when {
-                expression { PROD_BUILD == true || TAG_BUILD == true }
-            }
+//             when {
+//                 expression { PROD_BUILD == true || TAG_BUILD == true }
+//             }
             steps {
                 script {
                     docker.build "${DOCKER_IMAGE_NAME}"
@@ -97,12 +97,14 @@ pipeline {
         }
 
         stage('Push Docker Image') {
+//             when {
+//                 expression { PROD_BUILD == true || TAG_BUILD == true }
+//             }
             steps {
                 script {
                     docker.withRegistry("", DOCKERHUB_CREDENTIAL) {
                         docker.image("${DOCKER_IMAGE_NAME}").push()
                     }
-
                     sh "docker rmi ${DOCKER_IMAGE_NAME}"
                 }
             }
