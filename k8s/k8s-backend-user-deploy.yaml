@@ -14,7 +14,10 @@ spec:
     spec:
       containers:
       - name: k8s-backend-user
-        image: suhyunkim7288/k8s-backend-user:0.0.1-SNAPSHOT
+        image: suhyunkim7288/k8s-backend-user:0.0.1-TAG
         imagePullPolicy: Always
+        env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: dev
         ports:
         - containerPort: 8080

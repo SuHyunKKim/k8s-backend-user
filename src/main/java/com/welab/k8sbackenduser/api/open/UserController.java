@@ -1,5 +1,6 @@
 package com.welab.k8sbackenduser.api.open;
 
+import com.welab.k8sbackenduser.common.dto.ApiResponseDto;
 import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/user/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
-    @GetMapping(value = "/test")
-    public String test() {
-        return "Hello Kubernetes";
+    @GetMapping(value = "/hello")
+    public ApiResponseDto<String> test() {
+        return ApiResponseDto.createOk("웰컴 투 백엔드 유저");
     }
 }
