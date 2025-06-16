@@ -25,7 +25,7 @@ public class UserController {
         return ApiResponseDto.createOk(userResponse);
     }
 
-    @GetMapping
+    @GetMapping(value = "/test")
     public ApiResponseDto<String> test() {
 
         String userId = GatewayRequestHeaderUtils.getUserIdOrThrowException();
