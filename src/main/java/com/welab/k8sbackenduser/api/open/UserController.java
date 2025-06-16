@@ -1,12 +1,8 @@
 package com.welab.k8sbackenduser.api.open;
 
 import com.welab.k8sbackenduser.common.dto.ApiResponseDto;
-import com.welab.k8sbackenduser.domain.dto.SiteUserLoginDto;
-import com.welab.k8sbackenduser.domain.dto.SiteUserRegisterDto;
+import com.welab.k8sbackenduser.common.web.context.GatewayRequestHeaderUtils;
 import com.welab.k8sbackenduser.remote.alim.RemoteAlimService;
-import com.welab.k8sbackenduser.secret.jwt.dto.TokenDto;
-import com.welab.k8sbackenduser.service.SiteUserService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -27,5 +23,14 @@ public class UserController {
         String userResponse = "웰컴 투 백엔드 유저. 리모트 알림 메시지 = " + remoteMessage;
 
         return ApiResponseDto.createOk(userResponse);
+    }
+
+    @GetMapping
+    public ApiResponseDto<String> test() {
+
+        String userId = GatewayRequestHeaderUtils.getUserIdOrThrowException();
+        log.info("userId = {}", userId);
+
+        return ApiResponseDto.createOk(userId);
     }
 }
